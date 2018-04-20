@@ -18,22 +18,22 @@ app.use(cors())
 app.use(bodyParser.json())
 
 // verify JWT token middleware
-app.use(function (req, res, next) {
-  if (!req.headers.authorization) {
-    return next(new Error('Authorization header is required'))
-  }
-  let parts = req.headers.authorization.trim().split(' ')
-  let accessToken = parts.pop()
-  oktaJwtVerifier.verifyAccessToken(accessToken)
-    .then(jwt => {
-      req.user = {
-        uid: jwt.claims.uid,
-        email: jwt.claims.sub
-      }
-      next()
-    })
-    .catch(next)
-})
+// app.use(function (req, res, next) {
+//   if (!req.headers.authorization) {
+//     return next(new Error('Authorization header is required'))
+//   }
+//   let parts = req.headers.authorization.trim().split(' ')
+//   let accessToken = parts.pop()
+//   oktaJwtVerifier.verifyAccessToken(accessToken)
+//     .then(jwt => {
+//       req.user = {
+//         uid: jwt.claims.uid,
+//         email: jwt.claims.sub
+//       }
+//       next()
+//     })
+//     .catch(next)
+// })
 
 let database = new Sequelize({
   dialect: 'sqlite',
@@ -57,11 +57,11 @@ let userResource = epilogue.resource({
   endpoints: ['/posts', '/posts/:id']
 })
 
+
+app.get('/posts', () => res.status(200).send( "Hi!"))
+
+
 // Resets the database and launches the express app on :8081
-database
-  .sync({ force: true })
-  .then(() => {
     app.listen(8081, () => {
       console.log('listening to port localhost:8081')
     })
-  })
