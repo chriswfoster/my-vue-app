@@ -5,6 +5,9 @@ const Sequelize = require('sequelize')
 const epilogue = require('epilogue')
 const OktaJwtVerifier = require('@okta/jwt-verifier')
 
+const redis = require("redis");
+const client = redis.createClient();
+
 const oktaJwtVerifier = new OktaJwtVerifier({
   clientId: '0oaere2zywnXY4HQ70h7',
   issuer: 'https://dev-818927.oktapreview.com/oauth2/default'
@@ -36,7 +39,6 @@ let database = new Sequelize({
   dialect: 'sqlite',
   storage: './test.sqlite'
 })
-
 // id, createdAt, and updatedAt are added by sequelize automatically
 let Post = database.define('posts', {
   title: Sequelize.STRING,
